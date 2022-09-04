@@ -1,16 +1,21 @@
 package Projects.Life.Actions;
 
-import Projects.Life.ProducerConsumer.EnergyProducerI;
-import Projects.Life.ProducerConsumer.FoodProducerI;
-import Projects.Life.ProducerConsumer.GasConsumerI;
-import Projects.Life.ProducerConsumer.WaterConsumerI;
+import Projects.Life.Cell.Cell;
+import Projects.Life.ProducerConsumer.*;
+import Projects.Life.UniversalConstants.UniversalConstants;
+import Projects.Life.World.World;
 
-public class ActionPhotosynthesise extends AbstractAction implements FoodProducerI, GasConsumerI, WaterConsumerI
+public class ActionPhotosynthesise extends AbstractAction implements    FoodProducerI,
+                                                                        GasConsumerI,
+                                                                        WaterConsumerI,
+                                                                        GasProducerI,
+                                                                        LightConsumerI
 {
     private final float energyConsumption;
 
-    public ActionPhotosynthesise(float energyConsumption)
+    public ActionPhotosynthesise(Cell cell, float energyConsumption)
     {
+        super(cell);
         this.energyConsumption = energyConsumption;
     }
     @Override
@@ -20,15 +25,36 @@ public class ActionPhotosynthesise extends AbstractAction implements FoodProduce
     }
 
     @Override
+    //Lots of thread safe fun to think about here...
+    public boolean doAction()
+    {
+        if (!getCell().getFoodStore().addToStore(getFoodProduction()))
+        {
+            return false;
+        }
+        if (!getCell().getEnergyStore().removeFromStore(getEnergyConsumption()))
+        {
+            return false;
+        };
+
+        //check that the atmosphere has enough co2!
+        //check that we have enough light!
+        return true;
+    }
+
+    /*
+     * Interfaces
+     */
+    @Override
     public float getFoodProduction()
     {
-        return 0;
+        return UniversalConstants.the().getPhotosynthesisFoodProduction();
     }
 
     @Override
     public int getWaterConsumption()
     {
-        return 0;
+        return UniversalConstants.the().getPhotosynthesisWaterConsumption();
     }
 
     @Override
@@ -40,6 +66,24 @@ public class ActionPhotosynthesise extends AbstractAction implements FoodProduce
     @Override
     public int getCo2Consumption()
     {
+        return UniversalConstants.the().getPhotosynthesisCo2Consumption();
+    }
+
+    @Override
+    public int getOxygenProduction()
+    {
+        return UniversalConstants.the().getPhotosyntheisOxygenProduction();
+    }
+
+    @Override
+    public int getC02Production()
+    {
         return 0;
+    }
+
+    @Override
+    public int getLightConsumption()
+    {
+        return UniversalConstants.the().getPhotosynthesisLightConsumption();
     }
 }

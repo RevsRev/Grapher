@@ -26,82 +26,82 @@ public class CellParms
     @Getter private float energyStore = -1.0f;
     @Getter private float foodStore = -1.0f;
 
-    public <T extends CellProperty> T get(Class<? extends CellProperty> clazz)
+    public <T extends CellProperty> T get(Cell cell, Class<? extends CellProperty> clazz)
     {
         T retval;
         //senses
-        retval = getVis(clazz);
+        retval = getVis(cell, clazz);
         if (retval != null) return retval;
 
         //actions
-        retval = getAction(clazz);
+        retval = getAction(cell, clazz);
         if (retval != null) return retval;
 
         //brain
-        retval = getBr(clazz);
+        retval = getBr(cell, clazz);
         if (retval != null) return retval;
 
         //stores
-        retval = getStore(clazz);
+        retval = getStore(cell, clazz);
         if (retval != null) return retval;
 
         return null;
     }
 
-    private <T extends CellProperty> T getStore(Class<? extends CellProperty> clazz)
+    private <T extends CellProperty> T getStore(Cell cell, Class<? extends CellProperty> clazz)
     {
         if (EnergyStore.class == clazz
           && getEnergyStore() != -1.0f)
         {
-            return (T) new EnergyStore(getEnergyStore());
+            return (T) new EnergyStore(cell, getEnergyStore());
         }
 
         if (FoodStore.class == clazz
           && getFoodStore() != -1.0f)
         {
-            return (T) new FoodStore(getFoodStore());
+            return (T) new FoodStore(cell, getFoodStore());
         }
         return null;
     }
 
-    private <T extends CellProperty> T getBr(Class<? extends CellProperty> clazz)
+    private <T extends CellProperty> T getBr(Cell cell, Class<? extends CellProperty> clazz)
     {
         if (Brain.class == clazz
           && getBrain() != -1.0f)
         {
-            return (T) new Brain(getBrain());
+            return (T) new Brain(cell, getBrain());
         }
         return null;
     }
 
-    private <T extends CellProperty> T getVis(Class<? extends CellProperty> clazz)
+    private <T extends CellProperty> T getVis(Cell cell, Class<? extends CellProperty> clazz)
     {
         if (SenseVision.class == clazz
           && getVision() != -1.0f)
         {
-            return (T) new SenseVision(getVision());
+            return (T) new SenseVision(cell, getVision());
         }
         return null;
     }
 
-    private <T extends CellProperty> T getAction(Class<? extends CellProperty> clazz)
+    private <T extends CellProperty> T getAction(Cell cell, Class<? extends CellProperty> clazz)
     {
         if (ActionMovement.class == clazz
             && getMovement() != -1.0f)
         {
-            return (T) new ActionMovement(getMovement());
+            return (T) new ActionMovement(cell, getMovement());
         }
 
         if (ActionPhotosynthesise.class == clazz
           && getPhotosynthesise() != -1.0f)
         {
-            return (T) new ActionPhotosynthesise(getPhotosynthesise());
+            return (T) new ActionPhotosynthesise(cell, getPhotosynthesise());
         }
 
         if (ActionRespire.class == clazz
             && getRespire() != -1.0f)
         {
-            return (T) new ActionRespire(getRespire());
+            return (T) new ActionRespire(cell, getRespire());
         }
         return null;
     }

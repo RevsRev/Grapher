@@ -1,10 +1,12 @@
 package Projects.Life.Store;
 
+import Projects.Life.Cell.Cell;
+
 public class FoodStore extends AbstractStore
 {
 
-    public FoodStore(float store)
+    public FoodStore(Cell cell, float store)
     {
-        super(store);
+        super(cell, store);
     }
 }

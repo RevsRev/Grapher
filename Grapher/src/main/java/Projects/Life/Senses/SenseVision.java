@@ -1,5 +1,6 @@
 package Projects.Life.Senses;
 
+import Projects.Life.Cell.Cell;
 import Projects.Life.World.World;
 import util.Pair;
 
@@ -8,8 +9,9 @@ import java.util.HashSet;
 public class SenseVision extends AbstractSense
 {
     private final float energyCost;
-    public SenseVision(float energyCost)
+    public SenseVision(Cell cell, float energyCost)
     {
+        super(cell);
         this.energyCost = energyCost;
     }
 

@@ -1,10 +1,16 @@
 package Projects.Life.World;
 
+import Projects.Life.UniversalConstants.UniversalConstants;
+
 public class GroundWater
 {
-    private long water = 10000;
+    private int water = 10000;
 
-    public GroundWater(long water)
+    public GroundWater()
+    {
+        this(UniversalConstants.WORLD_GROUND_WATER);
+    }
+    public GroundWater(int water)
     {
         this.water = water;
     }

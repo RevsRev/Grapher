@@ -4,22 +4,25 @@ import Projects.Life.Cell.Cell;
 import Projects.Life.Cell.CellProperty;
 import lombok.Getter;
 
-public abstract class AbstractStore implements CellProperty
+public abstract class AbstractStore extends CellProperty
 {
     @Getter
     private float store = 0.0f;
 
-    public AbstractStore(float store)
+    public AbstractStore(Cell cell, float store)
     {
+        super(cell);
         this.store = store;
     }
 
-    public void addToStore(float amount)
+    public boolean addToStore(float amount)
     {
+        //TODO - Implement min/max amounts in the store!
         store += amount;
+        return true;
     }
-    public void removeFromStore(float amount)
+    public boolean removeFromStore(float amount)
     {
-        addToStore(-amount);
+        return addToStore(-amount);
     }
 }

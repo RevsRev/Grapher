@@ -7,7 +7,9 @@ import Projects.Life.ProducerConsumer.EnergyConsumerI;
 import Projects.Life.Store.EnergyStore;
 import Projects.Life.Senses.AbstractSense;
 import Projects.Life.Senses.SenseVision;
+import Projects.Life.Store.FoodStore;
 import Projects.Life.UpdatableI;
+import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,11 +20,14 @@ public class Cell implements EnergyConsumerI, UpdatableI
     private int y = 0;
     private int cachedRadius = -1; //area of Call proportional to its energy store, so radius goes like square root.
 
+    @Getter
     private final Brain brain;
-    private final HashSet<AbstractAction> actions;
-    private final HashSet<AbstractSense> senses;
+    @Getter final HashSet<AbstractAction> actions;
+    @Getter final HashSet<AbstractSense> senses;
 
-    private final EnergyStore energyStore;
+    @Getter final EnergyStore energyStore;
+
+    @Getter final FoodStore foodStore;
 
     private float cachedEnergyConsumption = -1.0f;
 
@@ -32,8 +37,9 @@ public class Cell implements EnergyConsumerI, UpdatableI
 
     public Cell(CellParms parms)
     {
-        brain = parms.get(Brain.class);
-        energyStore = parms.get(EnergyStore.class);
+        brain = parms.get(this, Brain.class);
+        energyStore = parms.get(this, EnergyStore.class);
+        foodStore = parms.get(this, FoodStore.class);
 
         actions = new HashSet<AbstractAction>();
         senses = new HashSet<AbstractSense>();
@@ -46,7 +52,7 @@ public class Cell implements EnergyConsumerI, UpdatableI
     {
         if (parms.getMovement() != -1.0f)
         {
-            actions.add(parms.get(ActionMovement.class));
+            actions.add(parms.get(this, ActionMovement.class));
         }
     }
 
@@ -54,7 +60,7 @@ public class Cell implements EnergyConsumerI, UpdatableI
     {
         if (parms.getVision() != -1.0f)
         {
-            senses.add(parms.get(SenseVision.class));
+            senses.add(parms.get(this, SenseVision.class));
         }
     }
 
